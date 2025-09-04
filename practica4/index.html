@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículum Vitae</title>
+    <style>
+        @keyframes matrix {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 0% 100%; }
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9), rgba(0,0,0,0.9)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="0" y="20" fill="%2302a78e" font-size="20">01</text><text x="40" y="40" fill="%2302a78e" font-size="20">10</text><text x="20" y="60" fill="%2302a78e" font-size="20">01</text><text x="60" y="80" fill="%2302a78e" font-size="20">10</text></svg>');
+            animation: matrix 20s linear infinite;
+            color: #333333;
+        }
+        .container {
+            display: flex;
+            max-width: 1000px;
+            margin: 20px auto;
+            background: #fff;
+            box-shadow: 0 0 20px rgba(2,167,142,0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+        .left {
+            width: 35%;
+            background: #02a78e;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .left img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: zoomIn 2s ease-in-out infinite alternate;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+        .left h2 {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+        .left p {
+            margin: 5px 0;
+        }
+        .section {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .section h3 {
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .right {
+            width: 65%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .right h1 {
+            margin-top: 0;
+            font-size: 28px;
+            animation: slideDown 1.5s ease-in-out;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .right h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2f4f4f;
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        /* Marca de agua */
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.10;
+            font-size: 80px;
+            font-weight: bold;
+            color: #02a78e;
+            user-select: none;
+            transform: rotate(-25deg);
+            white-space: pre;
+        }
+        /* Marca de agua repetida */
+        .watermark-repeat {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.07;
+            background-image: repeating-linear-gradient(
+                120deg,
+                #02a78e 0 2px,
+                transparent 2px 120px
+            );
+        }
+</style>
+</head>
+<body>
+    <p>Imagen AVIF</p>
+    <img src="capitan-america-1.avif" alt="Foto de perfil AVIF" width="200">
+
+    <p>Imagen JPG</p>
+    <img src="capitan-america-2.jpg" alt="Foto de perfil JPG" width="200">
+
+    <p>Imagen JPG a 600px</p>
+    <img src="capitan-america-3.jpg" alt="Foto de perfil JPG a 600px" width="">
+
+    <p>Imagen png</p>
+    <img src="capitan-america-4.png" alt="Foto de perfil PNG" width="200">
+
+    <p>Imagen webp</p>
+    <img src="capitan-america-5.webp" alt="Foto de perfil webp" width="200">
+
+    <p>Imagen AVIF</p>
+    <img src="mikaela.avif" alt="Foto de perfil AVIF" width="200">
+
+    <P>Imagen JPG</P>
+    <img src="mikaela.jpg" alt="Foto de perfil JPG" width="200">
+
+    <p>Imagen PNG</p>
+    <img src="mikaela.png" alt="Foto de perfil PNG" width="200">
+
+    <p>Imagen webp</p>
+    <img src="mikaela.webp" alt="Foto de perfil webp" width="200"
+
+    <!-- Marca de agua mandala SVG grande -->
+    <div class="watermark">Oscar Urbina Alvarado</div>
+    <div class="watermark-repeat"></div>
+    <div class="container">
+        <!-- Columna izquierda -->
+        <div class="left">
+            <img src="Grizou.jpg" alt="Foto de perfil">
+            <h2>👤 Datos Personales</h2>
+            <p><b>Edad:</b> 22 años</p>
+            <p><b>Nacionalidad:</b> Mexicana</p>
+            <p><b>Nacimiento:</b> 13 de diciembre de 1999</p>
+            
+            <div class="section">
+                <h3>📞 Contacto</h3>
+                <p>📱 (55)1234-5678</p>
+                <p>📧 hola@sitio.com</p>
+                <p>📍 Ciudad de México</p>
+            </div>
+            
+            <div class="section">
+                <h3>📚 Conocimientos</h3>
+                <ul>
+                    <li>💻 Desarrollo web</li>
+                    <li>☁️ Computación en la nube</li>
+                    <li>🗄️ Bases de datos</li>
+                    <li>🔒 Ciberseguridad</li>
+                    <li>📊 Análisis de datos</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>💡 Habilidades</h3>
+                <ul>
+                    <li>🤝 Trabajo en equipo</li>
+                    <li>🧠 Pensamiento analítico</li>
+                    <li>🔧 Resolución de problemas</li>
+                    <li>🚀 Adaptabilidad</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>🌍 Idiomas</h3>
+                <p>🇬🇧 Inglés B2</p>
+                <p>🇪🇸 Español Nativo</p>
+            </div>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="right">
+            <h1>Oscar Urbina Alvarado</h1>
+            <h2>📌 Ingeniero en Tecnologías y Soluciones de Negocio</h2>
+            
+            <div class="section">
+                <h3>🙋 Perfil Personal</h3>
+                <p>Estudiante de Ingeniería en Tecnologías y Soluciones de Negocio, apasionado por la tecnología y la innovación empresarial. Con conocimientos en desarrollo de software, análisis de datos y gestión de proyectos. Motivado por resolver retos tecnológicos y aportar valor a las organizaciones.</p>
+            </div>
+
+            <div class="section">
+                <h3>🎓 Formación Académica</h3>
+                <p><b>Ingeniería en Tecnologías y Soluciones de Negocio</b> (2023 - Actualidad)</p>
+                <p>Universidad Nacional Autónoma de México</p>
+                <p><b>Diplomado en Análisis de Datos</b> (2022)</p>
+                <p>Plataforma en línea</p>
+            </div>
+
+            <div class="section">
+                <h3>💼 Experiencia Laboral</h3>
+                <p><b>Prácticas Profesionales - Empresa Tech (2023)</b></p>
+                <p>Desarrollo de aplicaciones web, automatización de procesos y soporte técnico.</p>
+                <p><b>Proyecto Universitario (2022)</b></p>
+                <p>Implementación de sistema de gestión de inventarios para pequeña empresa.</p>
+            </div>
+
+            <div class="section">
+                <h3>📈 Certificaciones y Cursos</h3>
+                <p><b>Certificación en Cloud Computing</b> - 2023</p>
+                <p><b>Curso de Ciberseguridad Básica</b> - 2022</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
