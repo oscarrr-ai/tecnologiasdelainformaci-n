@@ -1,0 +1,22 @@
+body {
+    background: #2a9b88;
+background: linear-gradient(1deg,rgba(42, 155, 136, 1) 0%, rgba(186, 87, 199, 1) 72%, rgba(217, 0, 0, 0.91) 100%);
+    }
+
+    h1 {
+        font-size: 50px;
+
+    }
+    
+    h1, h2, p {
+        color: white;
+        text-align: center;
+        font-family: "Quicksand", sans-serif;
+
+
+    }
+    
+    h2 {
+        font-family: "Dancing Script", cursive;
+        font-size: 40px;
+    }
