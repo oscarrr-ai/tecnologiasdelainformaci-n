@@ -1,0 +1,25 @@
+header {
+        background-color: #4CAF50;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        margin: 50px;
+        border-radius: 10px;
+    }
+
+    h1 {
+        margin: 0;
+        color: blue;
+    }
+
+    footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
