@@ -1,0 +1,44 @@
+html{
+    font-size: 10px;
+}
+body {
+    background-color: mediumpurple;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+}
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 3em;
+}
+a {
+    display: block;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 30px; 
+    color: rgb(229, 229, 220);
+    text-decoration: none;
+    display: block;
+    margin: 0px auto;
+    padding: 20px;
+}
+a:hover{
+    background-color: aquamarine;
+    color: black;
+}
+#padre{
+    font-size: 10px;
+}
+h2{
+    font-size: 4em;
+
+}
+h3{
+    font-size: 5.5em;
+}
+li{
+    font-size: 30rem;
+}
