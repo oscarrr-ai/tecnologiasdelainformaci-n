@@ -1,98 +1,80 @@
 body {
-    background-color: rgb(0, 0, 0);
+    background-color: #000;
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
- 
+
 .container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-auto-rows: 250px;
+    gap: 15px;
+    padding: 15px;
 }
- 
+
 .item {
     background-color: white;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
+    border-radius: 10px;
     text-align: center;
-    font-size: 24px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: transform 0.4s ease, background-color 0.3s ease;
+    overflow: hidden;
 }
 
 .item:hover {
-    background-color: #0a253f;
-    transition: transform 0.5s, background-color 0.3s;
-    cursor: grab;
-    color: white;   
+    transform: scale(1.05);
+    cursor: pointer;
+    filter: brightness(1.2);
 }
 
 .item1 {
-    background-color: #ff9999;
     background-image: url('https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_.jpg');
-    background-size: cover;
-    background-position: top;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 150px;
 }
-.item2{
+.item2 {
     background-image: url('https://www.notebookcheck.org/fileadmin/Notebooks/News/_nc4/Indiana-Jones-and-the-Great-Circle-review-header.jpg');
-    background-size: cover;
-    background-position: center;
-        min-height: 150px;
 }
 .item3 {
-    background-color: #99ccff;
     background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQme4OcMTvMnPSFR5uiPXzou_-BAAaYq2Ua6ZbbGzrsU2GqwPpHTSaKIwAQu6cwkC6FaxkjTMWuYwew_N9TkWTjqRQmA1n8xouQRoutrQ');
-    display: flex;
-    justify-content: center;
-        min-height: 150px;
 }
 .item4 {
-    background-image:url('https://m.media-amazon.com/images/I/81fk-N7tvbL._UF894,1000_QL80_.jpg');
-    background-size: cover;
-    background-position: center;
-        min-height: 150px;
+    background-image: url('https://m.media-amazon.com/images/I/81fk-N7tvbL._UF894,1000_QL80_.jpg');
 }
 .item5 {
     background-image: url('https://play-lh.googleusercontent.com/VgZ60UF3ZJ6D9_pOov2SILzVrBcqJmSwiswghJBKTOEKaK_iijF2NU72v74y9YxBVD4AVy7pvNYvdR7R6inG');
-    background-size: cover;
-    background-position: center;
-        min-height: 150px;
 }
 .item6 {
     background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnxGjziiyvGKMZ6QBk1Lfq-pPudss3WfPObw&s');
-    background-size: cover;
-    background-position: center;
-        min-height: 150px;
 }
-.item7{
+.item7 {
     background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIHxB4r4ikVjL1HmIrATdsHuK3gTL5aHDYyQ&s');
-    background-size: cover;
-    background-position: center;
-        min-height: 150px;
 }
 .item8 {
     background-image: url('https://m.media-amazon.com/images/M/MV5BM2JlYzU3OTQtM2FmYy00OGZiLTllM2YtMjUwZGY0NmUzODE3XkEyXkFqcGc@._V1_.jpg');
-    background-size: cover;
-    background-position: center;
-        min-height: 150px;
 }
 .item9 {
     background-image: url('https://m.media-amazon.com/images/I/81WMUxNTRYL._UF894,1000_QL80_.jpg');
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.item {
     background-size: cover;
     background-position: center;
-    background-color: #ffcc99;
-    grid-column: 1 / 5;
-    grid-row: 4 / 5;
-        min-height: 150px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
+    .container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-auto-rows: 200px;
+    }
+}
+
+@media screen and (max-width: 500px) {
     .container {
         grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 150px;
     }
-    
 }
-
