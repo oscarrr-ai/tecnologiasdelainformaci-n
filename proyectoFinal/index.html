@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ULINE.MX — Cotizador Express</title>
+  <style>
+    /* --- Reset muy ligero --- */
+    * { box-sizing: border-box; }
+    html,body { height:100%; margin:0; font-family: "Roboto", Arial, sans-serif; background: #f6f7f9; color:#0b2540; }
+    :root{
+      --navy:#0b2540;
+      --emerald:#17a673;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --danger:#d9534f;
+      --shadow: 0 6px 18px rgba(11,37,64,0.08);
+      --glass: rgba(11,37,64,0.03);
+    }
+
+    /* --- Layout --- */
+    .wrap { max-width:920px; margin:20px auto; padding:16px; }
+    header { display:flex; align-items:center; gap:12px; }
+    .logo {
+      font-weight:700; color:var(--navy); font-size:20px;
+      padding:8px 12px; border-radius:8px; background: linear-gradient(180deg,var(--glass),transparent);
+    }
+    h1{ margin:0; font-size:20px; color:var(--navy); font-weight:700; }
+    p.lead{ margin:8px 0 18px; color:var(--muted); font-size:14px }
+
+    /* --- Form card --- */
+    .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
+    @media(min-width:760px){ .grid{ grid-template-columns: 1fr 360px; align-items:start; } }
+
+    .card { background:var(--card); border-radius:12px; padding:14px; box-shadow: var(--shadow); }
+    label { display:block; font-size:13px; color:var(--navy); margin-bottom:6px; font-weight:600; }
+    .input-row { display:flex; gap:8px; }
+    .input-row .field { flex:1; }
+
+    input[type="number"], input[type="text"], select {
+      width:100%; padding:12px 10px; font-size:15px; border-radius:8px; border:1px solid #e6e9ef;
+      background: transparent;
+    }
+    input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .field-error { border-color: var(--danger) !important; box-shadow: 0 0 0 3px rgba(217,83,79,0.06); }
+
+    .small{ font-size:12px; color:var(--muted); margin-top:6px; }
+
+    /* --- Buttons --- */
+    .actions { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+    button {
+      cursor:pointer; border:0; padding:12px 16px; border-radius:10px; font-weight:700; font-size:15px;
+      box-shadow: 0 6px 14px rgba(11,37,64,0.06);
+    }
+    .btn-primary { background: linear-gradient(180deg,var(--emerald), #0f8f66); color:white; }
+    .btn-ghost { background: transparent; border:1px solid #dbe3ea; color:var(--navy); }
+    .btn-ws { background:linear-gradient(180deg,#20c267,#13904f); color:white; display:inline-flex; align-items:center; gap:8px; }
+
+    /* --- Result panel --- */
+    .result-wrap { position:relative; }
+    .result-card { display:none; padding:16px; border-radius:12px; background:linear-gradient(180deg,var(--card),#fbfdff); box-shadow: var(--shadow); }
+    .result-line { display:flex; justify-content:space-between; align-items:center; margin:8px 0; }
+    .muted { color:var(--muted); font-size:13px; }
+    .price-big { font-size:26px; font-weight:800; color:var(--navy); }
+    .tag { display:inline-block; padding:6px 8px; font-size:12px; border-radius:8px; background:#eef6f2; color:#0d6b4a; font-weight:700; }
+
+    /* --- Validation text --- */
+    .validation { color:var(--danger); font-size:13px; margin-top:6px; display:none; }
+
+    /* --- Tiny helpers --- */
+    .divider{ height:1px; background:#f0f2f5; margin:12px 0; border-radius:2px; }
+    .meta { font-size:12px; color:var(--muted); }
+
+    /* --- Footer small --- */
+    footer { margin-top:12px; font-size:12px; color:var(--muted); text-align:center; }
+
+    /* focus styles */
+    input:focus, select:focus, button:focus { outline: none; box-shadow: 0 6px 14px rgba(11,37,64,0.06); border-color: #cbe7dd; }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">ULINE.MX</div>
+      <div>
+        <h1>Cotizador Express</h1>
+        <p class="lead">Introduce dimensiones y cantidad para obtener un precio exacto y mensaje listo para WhatsApp.</p>
+      </div>
+    </header>
+
+    <main class="grid" aria-live="polite">
+      <!-- FORM -->
+      <section class="card" aria-labelledby="form-title">
+        <h2 id="form-title" style="font-size:16px;margin:0 0 8px;color:var(--navy)">Detalle de la caja</h2>
+
+        <div class="field-group">
+          <label for="cliente">Nombre del Cliente</label>
+          <input id="cliente" type="text" placeholder="Ej. Ana Pérez" />
+          <div id="err-cliente" class="validation">Ingresa el nombre del cliente.</div>
+        </div>
+
+        <div style="height:8px"></div>
+
+        <div class="input-row">
+          <div class="field">
+            <label for="largo">Largo (cm)</label>
+            <input id="largo" type="number" min="0" step="0.1" placeholder="Ej. 40" />
+            <div id="err-largo" class="validation">Ingresa largo válido (>0).</div>
+          </div>
+          <div class="field">
+            <label for="ancho">Ancho (cm)</label>
+            <input id="ancho" type="number" min="0" step="0.1" placeholder="Ej. 30" />
+            <div id="err-ancho" class="validation">Ingresa ancho válido (>0).</div>
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+
+        <div class="input-row">
+          <div class="field">
+            <label for="alto">Alto (cm)</label>
+            <input id="alto" type="number" min="0" step="0.1" placeholder="Ej. 25" />
+            <div id="err-alto" class="validation">Ingresa alto válido (>0).</div>
+          </div>
+          <div class="field">
+            <label for="cantidad">Cantidad</label>
+            <input id="cantidad" type="number" min="1" step="1" placeholder="Ej. 250" />
+            <div id="err-cantidad" class="validation">Ingresa cantidad válida (>=1).</div>
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+
+        <div class="field">
+          <label for="material">Tipo de Material</label>
+          <select id="material" aria-label="Tipo de material">
+            <option value="">— Selecciona —</option>
+            <option value="corrugado">Corrugado Sencillo (x1.0)</option>
+            <option value="doble">Doble Corrugado (Heavy Duty) (x1.6)</option>
+            <option value="kraft">Kraft Ecológico (x1.2)</option>
+          </select>
+          <div id="err-material" class="validation">Selecciona el tipo de material.</div>
+        </div>
+
+        <div class="actions" style="margin-top:16px">
+          <button id="calcular" class="btn-primary" type="button" aria-label="Calcular precio">CALCULAR PRECIO</button>
+          <button id="copiar" class="btn-ws btn-ghost" type="button" style="display:inline-flex;" aria-label="Copiar mensaje WhatsApp">
+            COPIAR PARA WHATSAPP
+          </button>
+        </div>
+
+        <div class="small" style="margin-top:12px">
+          <strong>Nota:</strong> Fórmula usada: (L × A × H / 1,000,000) × PrecioBase (15,000 MXN/m³) × Factor material.
+        </div>
+      </section>
+
+      <!-- RESULTS -->
+      <aside class="result-wrap">
+        <div id="resultCard" class="result-card card" role="region" aria-live="polite" aria-hidden="true">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div class="tag">Cotización</div>
+              <div class="meta" style="margin-top:8px;">Resumen y desglose</div>
+            </div>
+            <div id="unitLabel" class="muted">Precio unitario</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="result-line">
+            <div class="muted">Precio unitario (sin IVA)</div>
+            <div id="precioUnitario" class="price-big">$0.00</div>
+          </div>
+
+          <div class="result-line">
+            <div class="muted">Subtotal</div>
+            <div id="subtotal" class="muted">$0.00</div>
+          </div>
+
+          <div class="result-line">
+            <div class="muted">Descuento</div>
+            <div id="descuento" class="muted">-$0.00</div>
+          </div>
+
+          <div class="result-line">
+            <div class="muted">IVA (16%)</div>
+            <div id="iva" class="muted">$0.00</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div style="display:flex; justify-content:space-between; align-items:end;">
+            <div>
+              <div class="muted">Válido por</div>
+              <div class="meta">24 horas</div>
+            </div>
+            <div>
+              <div class="muted">GRAN TOTAL</div>
+              <div id="granTotal" class="price-big" style="text-align:right;">$0.00</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="card" style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-weight:700; color:var(--navy);">Detalles rápidos</div>
+          <div class="muted">Precio base simulado: <strong>$15,000 MXN / m³</strong></div>
+          <div class="muted">Factores: Corrugado 1.0 • Doble 1.6 • Kraft 1.2</div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      PackMaster — Herramienta interna · Diseño Clean B2B · IVA incluido al final
+    </footer>
+  </div>
+
+  <script>
+    // -------------------------
+    // Configuración de negocio
+    // -------------------------
+    const PRECIO_BASE_M3 = 15000; // MXN por m^3
+    const FACTORES = {
+      corrugado: 1.0,
+      doble: 1.6,
+      kraft: 1.2
+    };
+    const IVA_RATE = 0.16;
+
+    // -------------------------
+    // Elementos DOM
+    // -------------------------
+    const clienteEl = document.getElementById('cliente');
+    const largoEl = document.getElementById('largo');
+    const anchoEl = document.getElementById('ancho');
+    const altoEl = document.getElementById('alto');
+    const cantidadEl = document.getElementById('cantidad');
+    const materialEl = document.getElementById('material');
+
+    const errCliente = document.getElementById('err-cliente');
+    const errLargo = document.getElementById('err-largo');
+    const errAncho = document.getElementById('err-ancho');
+    const errAlto = document.getElementById('err-alto');
+    const errCantidad = document.getElementById('err-cantidad');
+    const errMaterial = document.getElementById('err-material');
+
+    const btnCalcular = document.getElementById('calcular');
+    const btnCopiar = document.getElementById('copiar');
+
+    const resultCard = document.getElementById('resultCard');
+    const precioUnitarioEl = document.getElementById('precioUnitario');
+    const subtotalEl = document.getElementById('subtotal');
+    const descuentoEl = document.getElementById('descuento');
+    const ivaEl = document.getElementById('iva');
+    const granTotalEl = document.getElementById('granTotal');
+
+    // store last result for whatsapp
+    let lastResult = null;
+
+    // -------------------------
+    // Helpers
+    // -------------------------
+    function formatMXN(value){
+      return value.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 2 });
+    }
+
+    function setError(elInput, elMsg, show){
+      if(show){
+        elInput.classList.add('field-error');
+        elMsg.style.display = 'block';
+      } else {
+        elInput.classList.remove('field-error');
+        elMsg.style.display = 'none';
+      }
+    }
+
+    function validateAll(){
+      let ok = true;
+
+      // cliente
+      if(!clienteEl.value.trim()){
+        setError(clienteEl, errCliente, true); ok = false;
+      } else setError(clienteEl, errCliente, false);
+
+      // largo
+      const largo = parseFloat(largoEl.value);
+      if(isNaN(largo) || largo <= 0){
+        setError(largoEl, errLargo, true); ok = false;
+      } else setError(largoEl, errLargo, false);
+
+      // ancho
+      const ancho = parseFloat(anchoEl.value);
+      if(isNaN(ancho) || ancho <= 0){
+        setError(anchoEl, errAncho, true); ok = false;
+      } else setError(anchoEl, errAncho, false);
+
+      // alto
+      const alto = parseFloat(altoEl.value);
+      if(isNaN(alto) || alto <= 0){
+        setError(altoEl, errAlto, true); ok = false;
+      } else setError(altoEl, errAlto, false);
+
+      // cantidad
+      const cantidad = parseInt(cantidadEl.value,10);
+      if(isNaN(cantidad) || cantidad < 1){
+        setError(cantidadEl, errCantidad, true); ok = false;
+      } else setError(cantidadEl, errCantidad, false);
+
+      // material
+      if(!materialEl.value){
+        setError(materialEl, errMaterial, true); ok = false;
+      } else setError(materialEl, errMaterial, false);
+
+      return ok;
+    }
+
+    // -------------------------
+    // Lógica de cálculos
+    // -------------------------
+    function calcularCotizacion(){
+      if(!validateAll()){
+        // focus on first invalid
+        const firstErr = document.querySelector('.field-error');
+        if(firstErr) firstErr.focus();
+        return;
+      }
+
+      const cliente = clienteEl.value.trim();
+      const L = parseFloat(largoEl.value);
+      const A = parseFloat(anchoEl.value);
+      const H = parseFloat(altoEl.value);
+      const qty = parseInt(cantidadEl.value, 10);
+      const materialKey = materialEl.value;
+
+      // volumen en m^3
+      const volumen_m3 = (L * A * H) / 1000000; // cm^3 -> m^3
+
+      // factor material
+      const factor = FACTORES[materialKey] || 1.0;
+
+      // precio unitario (antes de impuestos y descuentos)
+      const precioUnitario = volumen_m3 * PRECIO_BASE_M3 * factor;
+
+      // subtotal = precio unitario * cantidad
+      const subtotal = precioUnitario * qty;
+
+      // descuento según reglas
+      let descuentoRate = 0;
+      if(qty > 1000) descuentoRate = 0.10;
+      else if(qty > 500) descuentoRate = 0.05;
+
+      const descuentoMonto = subtotal * descuentoRate;
+
+      // IVA aplicado al subtotal - descuento
+      const baseImpuestos = subtotal - descuentoMonto;
+      const ivaMonto = baseImpuestos * IVA_RATE;
+
+      const total = baseImpuestos + ivaMonto;
+
+      // Guardar resultado
+      lastResult = {
+        cliente,
+        L, A, H,
+        qty,
+        materialKey,
+        factor,
+        volumen_m3,
+        precioUnitario,
+        subtotal,
+        descuentoRate,
+        descuentoMonto,
+        ivaMonto,
+        total
+      };
+
+      // Mostrar en UI
+      precioUnitarioEl.textContent = formatMXN(precioUnitario);
+      subtotalEl.textContent = formatMXN(subtotal);
+      descuentoEl.textContent = '-' + formatMXN(descuentoMonto) + (descuentoRate>0 ? ` (${(descuentoRate*100).toFixed(0)}%)` : '');
+      ivaEl.textContent = formatMXN(ivaMonto);
+      granTotalEl.textContent = formatMXN(total);
+
+      // reveal card
+      resultCard.style.display = 'block';
+      resultCard.setAttribute('aria-hidden','false');
+
+      // enable copiar
+      btnCopiar.disabled = false;
+      btnCopiar.classList.remove('btn-ghost');
+      btnCopiar.classList.add('btn-ws');
+
+      // For screen readers announce summary (light)
+      resultCard.focus?.();
+
+      return lastResult;
+    }
+
+    // -------------------------
+    // Mensaje WhatsApp y copia
+    // -------------------------
+    function materialLabel(key){
+      if(key === 'corrugado') return 'Corrugado Sencillo';
+      if(key === 'doble') return 'Doble Corrugado (Heavy Duty)';
+      if(key === 'kraft') return 'Kraft Ecológico';
+      return key;
+    }
+
+    function generarMensajeWhatsApp(){
+      if(!lastResult){
+        alert('Calcula la cotización antes de copiar el mensaje para WhatsApp.');
+        return;
+      }
+      const { cliente, qty, L, A, H, materialKey, total } = lastResult;
+      const totalStr = total.toLocaleString('es-MX', { style:'currency', currency:'MXN', maximumFractionDigits: 2 });
+
+      const msg = `Hola ${cliente}, tu cotización por ${qty} cajas de ${materialLabel(materialKey)} medidas ${L}x${A}x${H} cm es de ${totalStr}. Válido por 24h.`;
+      return msg;
+    }
+
+    async function copiarWhatsApp(){
+      const msg = generarMensajeWhatsApp();
+      if(!msg) return;
+      try {
+        await navigator.clipboard.writeText(msg);
+        alert('Mensaje copiado al portapapeles. Pégalo en WhatsApp para enviar al cliente.');
+      } catch (err){
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = msg;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); alert('Mensaje copiado al portapapeles (método alterno).'); }
+        catch(e){ alert('No fue posible copiar al portapapeles automáticamente. Selecciona y copia manualmente:\n\n' + msg); }
+        ta.remove();
+      }
+    }
+
+    // -------------------------
+    // Event listeners
+    // -------------------------
+    btnCalcular.addEventListener('click', () => {
+      calcularCotizacion();
+    });
+
+    btnCopiar.addEventListener('click', () => {
+      copiarWhatsApp();
+    });
+
+    // Allow Enter to calculate when focused on inputs
+    [clienteEl, largoEl, anchoEl, altoEl, cantidadEl, materialEl].forEach(el => {
+      el.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          calcularCotizacion();
+        }
+      });
+      // clear error on input
+      el.addEventListener('input', () => {
+        el.classList.remove('field-error');
+        const errId = 'err-' + (el.id || '');
+        const errEl = document.getElementById(errId);
+        if(errEl) errEl.style.display = 'none';
+      });
+    });
+
+    // Init: disable copy until calculation
+    btnCopiar.disabled = true;
+    btnCopiar.classList.add('btn-ghost');
+  </script>
+</body>
+</html>
